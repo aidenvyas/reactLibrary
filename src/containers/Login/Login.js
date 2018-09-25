@@ -1,23 +1,33 @@
 import React, { Component } from "react";
-
+import {Button}  from 'reactstrap'
+// import { Button } from "react-bootstrap";
 class Login extends Component {
   constructor() {
     super();
     this.state = {
       email: "",
-      password: ""
+      password: "",
+      login: false,
+      errors: false
     };
     this.handleChange = this.handleChange.bind(this);
   }
 
-  handleChange(evt) {
-    this.setState({ [evt.target.name]: evt.target.value });
-  }
+  submitForm = e => {
+    e.preventDefault();
+    this.setState({ login: true });
+    this.props.history.push("/library");
+  };
+
+  handleChange = event => {
+    this.setState({ [event.target.name]: event.target.value });
+  };
+
   render() {
     return (
       <div>
         login!!
-        <form>
+        <form onSubmit={this.submitForm}>
           <input
             type="text"
             name="email"
@@ -30,11 +40,11 @@ class Login extends Component {
             placeholder="Enter password!"
             onChange={this.changeHandler}
           />
-          <button type="submit">Login!</button>
+          <button className={Button}>Login!</button>
+          <Button color="secondary" size="lg">Large Button</Button>
         </form>
       </div>
     );
   }
 }
-
 export default Login;
