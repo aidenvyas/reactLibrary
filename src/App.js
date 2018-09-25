@@ -1,27 +1,35 @@
-import React, { Component } from 'react';
-import { Link, Route } from 'react-router-dom';
+import React, { Component } from "react";
+import { NavLink, Route, Switch } from "react-router-dom";
 
-import Users from './containers/Users';
-import asyncComponent from './hoc/asyncComponent';
+import Users from "./containers/Users";
+import asyncComponent from "./hoc/asyncComponent";
 
-const AsyncPizza = asyncComponent(() => {
-    return import('./containers/Library.js');
+const AsyncLibrary = asyncComponent(() => {
+  return import("./containers/Library.js");
 });
 
 class App extends Component {
-    render () {
-        return (
-            <div>
-                <div>
-                    <Link to="/">Users</Link> | <Link to="/library">Library</Link>
-                </div>
-                <div>
-                    <Route path="/" exact component={Users} />
-                    <Route path="/library" component={AsyncPizza} />
-                </div>
-            </div>
-        );
-    }
+  render() {
+    return (
+      <div>
+        <div>
+          <NavLink to="/users" exact activeClassName="my-active">
+            Users
+          </NavLink>
+          ||
+          <NavLink to="/library" exact activeClassName="my-active">
+            library
+          </NavLink>
+        </div>
+        <div>
+          <Switch>
+            <Route path="/users" exact component={Users} />
+            <Route path="/library" component={AsyncLibrary} />
+          </Switch>
+        </div>
+      </div>
+    );
+  }
 }
 
 export default App;
