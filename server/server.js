@@ -1,8 +1,4 @@
-const express=require('express')()
-
-const booksRouter=require('./Routes/booksRouter')
-express.use('/',booksRouter)
-express.listen(3434,console.log('listening on 3434'))
-
-
-module.exports=express;
+var app=require('./app')
+app.listen(3000,function(){
+    console.log('server running on 8080')
+})

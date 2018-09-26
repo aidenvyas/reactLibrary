@@ -1,10 +1,7 @@
 const express = require("express");
-const bodyParser=require('body-parser')
-const cors=require('cors')
 const Books = require("../models/books");
 const bookRouter = express.Router();
-bookRouter.use(bodyParser.json())
-bookRouter.use(cors())
+
 bookRouter
   .route("/")
   .get((req, res, next) => {
@@ -29,12 +26,16 @@ bookRouter
           res.setHeader("Content-Type", "application/json");
           res.json(book);
         },
-        err => next(err)
+        err => {
+          res.send("cant add duplicates");
+        }
       )
-      .catch(err => next(err));
+      .catch(err => {
+        res.send("cant add duplicates");
+      });
   })
   .delete((req, res, next) => {
-    Books.remove({})
+    Books.deleteMany({})
       .then(
         resp => {
           res.statusCode = 200;

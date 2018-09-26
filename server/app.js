@@ -1,16 +1,12 @@
-const mongoose = require("mongoose");
-mongoose.Promise = require("bluebird");
+const express = require("express");
+const app = express();
+const cors=require('cors')
+const bodyParser = require("body-parser");
+app.use(bodyParser.json())
+app.use(cors())
+const db = require("./db");
 
-const connect = mongoose.connect(
-  "mongodb://localhost:27017/library"
-);
+const bookRouter = require("./Routes/booksRouter");
+app.use("/books", bookRouter);
 
-connect.then(
-  db => {
-    console.log("connected to server");
-  },
-  err => {
-    console.log(err);
-  }
-);
-
+module.exports = app;
