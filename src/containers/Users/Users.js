@@ -9,10 +9,13 @@ class Users extends Component {
           <h1>The Users</h1>
           <p>Awesome users on board of this course!</p>
         </div>
-        <div >
-          <Link to="/login">Login</Link> || <Link to="/signup">Signup</Link>
+
+        <div>
+          <Link to="/login">Login</Link>
         </div>
-      
+        <div>
+          <Link to="/signup">Signup</Link>
+        </div>
       </div>
     );
   }

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Navbar from "../../components/NavBar/Navbar";
+
 class Login extends Component {
   constructor() {
     super();
@@ -31,19 +32,20 @@ class Login extends Component {
         <Navbar heading={"LOGIN"} />
         <br/>
         <form onSubmit={this.submitForm}>
+        <div>
           <TextField
             id="outlined-required"
-            label="Email"
+            label="Email" name="email"
             onChange={this.changeHandler}
             variant="outlined"
-          />
-          <br />
+          /></div>
+       <div>
           <TextField
             variant="outlined"
-            label="password"
+            label="password" name="password"
             onChange={this.changeHandler}
             variant="outlined"
-          /><br />
+          /></div>
           <Button variant="outlined" color="primary">
             Login
           </Button>

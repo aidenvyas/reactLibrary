@@ -1,5 +1,7 @@
 import React, { Component } from "react";
-import Navbar from '../../components/NavBar/Navbar'
+import Navbar from "../../components/NavBar/Navbar";
+import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
 class Signup extends Component {
   constructor() {
     super();
@@ -13,7 +15,7 @@ class Signup extends Component {
     this.handleChange = this.handleChange.bind(this);
   }
   handleSignup = event => {
-    event.preventDefault()
+    event.preventDefault();
     this.setState({ signup: true });
     this.props.history.push("/login");
   };
@@ -23,25 +25,47 @@ class Signup extends Component {
   render() {
     return (
       <div>
-        <Navbar heading="Signup!"/>
+        <Navbar heading="Signup!" />
         <form onSubmit={this.handleSignup}>
-          <label>
-            Enter Name:{" "}
-            <input type="text" name="name" onChange={this.handleChange} />
-          </label>
-          <label>
-            Enter Email:{" "}
-            <input type="text" name="email" onChange={this.handleChange} />
-          </label>
-          <label>
-            Enter Password:{" "}
-            <input type="password" name="pwd" onChange={this.handleChange} />
-          </label>
-          <label>
-            Confirm Password:{" "}
-            <input type="password" name="cnfpwd" onChange={this.handleChange} />
-          </label>
-          <button type="submit">SignUp!</button>
+          <div>
+            <TextField
+              id="outlined-required"
+              label="name"
+              onChange={this.changeHandler}
+              variant="outlined"
+              name="name"
+            />
+          </div>
+          <div>
+            <TextField
+              id="outlined-required"
+              label="Email"
+              onChange={this.changeHandler}
+              variant="outlined"
+              name="email"
+            />
+          </div>
+          <div>
+            <TextField
+              id="outlined-required"
+              label="password"
+              onChange={this.changeHandler}
+              variant="outlined"
+              name="pwd"
+            />
+          </div>
+          <div>
+            <TextField
+              id="outlined-required"
+              label="confirm password"
+              onChange={this.changeHandler}
+              name="cnfpwd"
+              variant="outlined"
+            />
+          </div>
+          <Button variant="outlined" color="primary">
+            SignUp
+          </Button>
         </form>
       </div>
     );

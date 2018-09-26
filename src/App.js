@@ -5,8 +5,6 @@ import Users from "./containers/Users/Users";
 import asyncComponent from "./hoc/asyncComponent";
 import Signup from "./containers/Signup/Signup";
 import Login from "./containers/Login/Login";
-
-
 const AsyncLibrary = asyncComponent(() => {
   return import("./containers/Library/Library.js");
 });
@@ -14,14 +12,14 @@ const AsyncLibrary = asyncComponent(() => {
 class App extends Component {
   render() {
     return (
-      <BrowserRouter  >
+      <BrowserRouter>
         <div>
           <div>
-            <NavLink to="/users" exact activeClassName="my-active">
+            <NavLink to="/users" activeClassName="my-active">
               Users
             </NavLink>
-            ||
-            <NavLink to="/library" exact activeClassName="my-active">
+
+            <NavLink to="/library" activeClassName="my-active">
               library
             </NavLink>
           </div>
@@ -31,7 +29,6 @@ class App extends Component {
               <Route path="/library" component={AsyncLibrary} />
               <Route path="/login" component={Login} />
               <Route path="/signup" component={Signup} />
-
             </Switch>
           </div>
         </div>
