@@ -1,27 +1,40 @@
-import React, { Component } from 'react';
-import { Link, Route } from 'react-router-dom';
-
-import Users from './containers/Users';
-import asyncComponent from './hoc/asyncComponent';
-
-const AsyncPizza = asyncComponent(() => {
-    return import('./containers/Library.js');
+import React, { Component } from "react";
+import { NavLink, Route, Switch } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
+import Users from "./containers/Users/Users";
+import asyncComponent from "./hoc/asyncComponent";
+import Signup from "./containers/Signup/Signup";
+import Login from "./containers/Login/Login";
+const AsyncLibrary = asyncComponent(() => {
+  return import("./containers/Library/Library.js");
 });
 
 class App extends Component {
-    render () {
-        return (
-            <div>
-                <div>
-                    <Link to="/">Users</Link> | <Link to="/library">Library</Link>
-                </div>
-                <div>
-                    <Route path="/" exact component={Users} />
-                    <Route path="/library" component={AsyncPizza} />
-                </div>
-            </div>
-        );
-    }
+  render() {
+    return (
+      <BrowserRouter>
+        <div>
+          <div>
+            <NavLink to="/users" activeClassName="my-active">
+              Users
+            </NavLink>
+
+            <NavLink to="/library" activeClassName="my-active">
+              library
+            </NavLink>
+          </div>
+          <div>
+            <Switch>
+              <Route path="/users" exact component={Users} />
+              <Route path="/library" component={AsyncLibrary} />
+              <Route path="/login" component={Login} />
+              <Route path="/signup" component={Signup} />
+            </Switch>
+          </div>
+        </div>
+      </BrowserRouter>
+    );
+  }
 }
 
 export default App;
