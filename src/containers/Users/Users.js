@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-
 import { Link } from "react-router-dom";
+
 class Users extends Component {
   render() {
     return (
@@ -12,6 +12,7 @@ class Users extends Component {
         <div >
           <Link to="/login">Login</Link> || <Link to="/signup">Signup</Link>
         </div>
+      
       </div>
     );
   }

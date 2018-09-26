@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import {Button}  from 'reactstrap'
-// import { Button } from "react-bootstrap";
+import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
+import Navbar from "../../components/NavBar/Navbar";
 class Login extends Component {
   constructor() {
     super();
@@ -26,22 +27,26 @@ class Login extends Component {
   render() {
     return (
       <div>
-        login!!
+        
+        <Navbar heading={"LOGIN"} />
+        <br/>
         <form onSubmit={this.submitForm}>
-          <input
-            type="text"
-            name="email"
-            placeholder="Enter Email!"
+          <TextField
+            id="outlined-required"
+            label="Email"
             onChange={this.changeHandler}
+            variant="outlined"
           />
-          <input
-            type="password"
-            name="password"
-            placeholder="Enter password!"
+          <br />
+          <TextField
+            variant="outlined"
+            label="password"
             onChange={this.changeHandler}
-          />
-          <button className={Button}>Login!</button>
-          <Button color="secondary" size="lg">Large Button</Button>
+            variant="outlined"
+          /><br />
+          <Button variant="outlined" color="primary">
+            Login
+          </Button>
         </form>
       </div>
     );

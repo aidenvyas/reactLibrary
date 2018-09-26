@@ -14,7 +14,7 @@ const AsyncLibrary = asyncComponent(() => {
 class App extends Component {
   render() {
     return (
-      <BrowserRouter>
+      <BrowserRouter  >
         <div>
           <div>
             <NavLink to="/users" exact activeClassName="my-active">

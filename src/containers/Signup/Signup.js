@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-
+import Navbar from '../../components/NavBar/Navbar'
 class Signup extends Component {
   constructor() {
     super();
@@ -23,6 +23,7 @@ class Signup extends Component {
   render() {
     return (
       <div>
+        <Navbar heading="Signup!"/>
         <form onSubmit={this.handleSignup}>
           <label>
             Enter Name:{" "}
