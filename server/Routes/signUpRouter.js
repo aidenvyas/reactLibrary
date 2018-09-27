@@ -1,38 +1,30 @@
 const express = require("express");
-const userRouter = express.Router();
+const router = express.Router();
 const Users = require("../models/users");
 const passport = require("passport");
 
-userRouter.post("/signup", (req, res, next) => {
-  Users.register(
-    new Users({
-      username: req.body.username
-    }, req.body.password,
-    req.body.email,),
-   
-
-    (err, user) => {
-      if (err) {
-        res.statusCode = 500;
-        res.setHeader("Content-Type", "application/json");
-        console.log(err);
-        res.json({ err: err });
-      } else {
-        passport.authenticate("local")(req, res, () => {
-          res.statusCode = 200;
-          res.setHeader("Content-Type", "application/json");
-          res.send({ success: true, status: "registration successful!" });
-        });
-      }
+router.post('/signup', (req, res, next) => {
+  User.register(new User({username: req.body.username}), 
+    req.body.password, (err, user) => {
+    if(err) {
+      res.statusCode = 500;
+      res.setHeader('Content-Type', 'application/json');
+      res.json({err: err});
     }
-  );
+    else {
+      passport.authenticate('local')(req, res, () => {
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        res.json({success: true, status: 'Registration Successful!'});
+      });
+    }
+  });
 });
 
-userRouter.post("/login", passport.authenticate("local"), (req, res) => {
+router.post('/login', passport.authenticate('local'), (req, res) => {
   res.statusCode = 200;
-
-  res.setHeader("Content-Type", "application/json");
-  res.send({ success: true, status: "Login successful!" });
+  res.setHeader('Content-Type', 'application/json');
+  res.json({success: true, status: 'You are successfully logged in!'});
 });
 
-module.exports = userRouter;
+module.exports = router;
