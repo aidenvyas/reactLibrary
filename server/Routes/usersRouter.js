@@ -37,7 +37,7 @@ userRouter
   })
   .put((req, res, next) => {
     res.send("cant update");
-  });
+  })
 
 userRouter
   .route("/:userId")
@@ -73,19 +73,17 @@ userRouter
       })
       .catch(err => {
         res.send(err);
-      })
+      });
   })
-  .delete((req,res,next)=>{
-      Users.findByIdAndRemove(req.params.userId)
-      .then(
-        user => {
-          res.statusCode = 200;
-          res.setHeader("Content-Type", "application/json");
-          res.json(user);
-        },
-        err => next(err)
-      )
-  })
-  
-  
-module.exports=userRouter
+  .delete((req, res, next) => {
+    Users.findByIdAndRemove(req.params.userId).then(
+      user => {
+        res.statusCode = 200;
+        res.setHeader("Content-Type", "application/json");
+        res.json(user);
+      },
+      err => next(err)
+    );
+  });
+
+module.exports = userRouter;
