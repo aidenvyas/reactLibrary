@@ -1,14 +1,10 @@
-var mongoose = require("mongoose");
+const mongoose = require("mongoose");
+mongoose.Promise = require("bluebird");
+const config = require("./config");
 mongoose.connect(
-  "mongodb://localhost:27017/mydb",
+  config.mongoUrl,
   {
     useCreateIndex: true,
     useNewUrlParser: true
-  },
-  err => {
-    if (err) console.log(err);
-    else {
-      console.log("connected!");
-    }
   }
 );

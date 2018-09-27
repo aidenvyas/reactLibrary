@@ -1,7 +1,7 @@
 const express = require("express");
 const Books = require("../models/books");
 const bookRouter = express.Router();
-
+const authenticate=require('../authenticate')
 bookRouter
   .route("/")
   .get((req, res, next) => {
@@ -17,7 +17,7 @@ bookRouter
       )
       .catch(err => next(err));
   })
-  .post((req, res, next) => {
+  .post(authenticate.verifyUser,(req, res, next) => {
     Books.create(req.body)
       .then(
         book => {
@@ -34,7 +34,7 @@ bookRouter
         res.send("cant add duplicates");
       });
   })
-  .delete((req, res, next) => {
+  .delete(authenticate.verifyUser,(req, res, next) => {
     Books.deleteMany({})
       .then(
         resp => {
@@ -61,11 +61,11 @@ bookRouter
       )
       .catch(err => next(err));
   })
-  .post((req, res, next) => {
+  .post(authenticate.verifyUser,(req, res, next) => {
     res.statusCode = 403;
     res.end("POST OPERATION CANT BE DONE");
   })
-  .put((req, res, next) => {
+  .put(authenticate.verifyUser,(req, res, next) => {
     Books.findByIdAndUpdate(
       req.params.bookId,
       {
@@ -83,7 +83,7 @@ bookRouter
       )
       .catch(err => next(err));
   })
-  .delete((req, res, next) => {
+  .delete(authenticate.verifyUser,(req, res, next) => {
     Books.findByIdAndRemove(req.params.bookId)
       .then(
         book => {
