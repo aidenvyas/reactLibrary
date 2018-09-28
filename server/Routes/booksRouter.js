@@ -17,7 +17,7 @@ bookRouter
       )
       .catch(err => next(err));
   })
-  .post(authenticate.verifyUser,(req, res, next) => {
+  .post(authenticate.verifyUser,authenticate.verifyAdmin,(req, res, next) => {
     Books.create(req.body)
       .then(
         book => {
@@ -34,7 +34,7 @@ bookRouter
         res.send("invalid inputs.");
       });
   })
-  .delete(authenticate.verifyUser,(req, res, next) => {
+  .delete(authenticate.verifyUser,authenticate.verifyAdmin,(req, res, next) => {
     Books.deleteMany({})
       .then(
         resp => {
@@ -65,7 +65,7 @@ bookRouter
     res.statusCode = 403;
     res.end("POST OPERATION CANT BE DONE");
   })
-  .put(authenticate.verifyUser,(req, res, next) => {
+  .put(authenticate.verifyUser,authenticate.verifyAdmin,(req, res, next) => {
     Books.findByIdAndUpdate(
       req.params.bookId,
       {
@@ -83,7 +83,7 @@ bookRouter
       )
       .catch(err => next(err));
   })
-  .delete(authenticate.verifyUser,(req, res, next) => {
+  .delete(authenticate.verifyUser,authenticate.verifyAdmin,(req, res, next) => {
     Books.findByIdAndRemove(req.params.bookId)
       .then(
         book => {
