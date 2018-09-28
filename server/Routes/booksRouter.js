@@ -31,7 +31,7 @@ bookRouter
         }
       )
       .catch(err => {
-        res.send("cant add duplicates");
+        res.send("invalid inputs.");
       });
   })
   .delete(authenticate.verifyUser,(req, res, next) => {

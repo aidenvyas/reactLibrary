@@ -10,7 +10,8 @@ userRouter
         res.statusCode = 200;
 
         res.setHeader("Content-Type", "application/json");
-        res.json(users);
+
+        res.send(users);
       })
       .catch(err => {
         res.send("no users!");
@@ -22,6 +23,7 @@ userRouter
         console.log("user created!");
         res.statusCode = 200;
         res.setHeader("Content-Type", "application/json");
+        
         res.json(user);
       })
       .catch(err => next(err));
@@ -37,7 +39,7 @@ userRouter
   })
   .put((req, res, next) => {
     res.send("cant update");
-  })
+  });
 
 userRouter
   .route("/:userId")

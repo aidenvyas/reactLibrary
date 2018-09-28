@@ -21,10 +21,11 @@ exports.getToken = function(user) {
 const opts={}
 
 opts.jwtFromRequest=ExtractJwt.fromAuthHeaderAsBearerToken()
+
 opts.secretOrKey=config.secretkey
 
+
 exports.jwtPassport=passport.use(new JwtStrategy(opts,(jwt_payload,done)=>{
-    console.log("jwt_payload",jwt_payload)
     User.findOne({_id:jwt_payload._id},(err,user)=>{
         if(err) return done(err,false);
         else if(user){return done(null,user)}
@@ -33,3 +34,4 @@ exports.jwtPassport=passport.use(new JwtStrategy(opts,(jwt_payload,done)=>{
 }))
 
 exports.verifyUser=passport.authenticate('jwt',{session:false})
+
