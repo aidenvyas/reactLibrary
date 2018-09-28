@@ -21,7 +21,7 @@ const authenticate = require("../authenticate");
 router.post("/signup", (req, res, next) => {
   Users.register(
     new Users({ username: req.body.username, email: req.body.email }),
-    req.body.password,
+
     function(err, account) {
       if (err) {
         res.statusCode = 500;
