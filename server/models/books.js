@@ -11,7 +11,8 @@ var librarySchema = new Schema(
     description: { type: String },
     image: { type: String },
     author: { type: String },
-    copies: Number
+    copies: { type: Number },
+    location: { type: String }
   },
   {
     usePushEach: true
