@@ -4,24 +4,22 @@ const Users = require("../models/users");
 const passport = require("passport");
 const authenticate = require("../authenticate");
 
-// router.post("/signup", (req, res, next) => {
-//   Users.register(
-//     new Users({ username: req.body.username,email:req.body.email,password:req.body.password }),
-
-//     function(err, account) {
-//       if (err) {
-//         res.statusCode = 500;
-//         res.setHeader("Content-Type", "application/json");
-//         res.send({ err: err });
-//       }
-//       passport.authenticate("local")(req, res, function() {
-//         res.send("/books");
-//       })})});
 
 router.post("/signup", (req, res, next) => {
+
+  if(req.body.admin){
+    req.body.admin=true
+  }else{
+    req.body.admin=false
+  }
   Users.register(
+<<<<<<< HEAD
     new Users({ username: req.body.username, email: req.body.email }),
 
+=======
+    new Users({ username: req.body.username, email: req.body.email,admin:req.body.admin }),
+    req.body.password,
+>>>>>>> 023e812be1399699f070b1516e4bdc2c6c176e7c
     function(err, account) {
       if (err) {
         res.statusCode = 500;
@@ -36,20 +34,6 @@ router.post("/signup", (req, res, next) => {
   );
 });
 
-// Users.register(new Users({username: req.body.username}),
-//     req.body.password, (err, user) => {
-//     if(err) {
-//
-//     }
-//     else {
-//       passport.authenticate('local')(req, res, () => {
-//         res.statusCode = 200;
-//         res.setHeader('Content-Type', 'application/json');
-//         res.json({success: true, status: 'Registration Successful!'});
-//       });
-//     }
-//   });
-// });
 
 router.post("/login", passport.authenticate("local"), (req, res) => {
   const token = authenticate.getToken({ _id: req.user._id });
@@ -62,7 +46,7 @@ router.post("/login", passport.authenticate("local"), (req, res) => {
   });
 });
 
-router.post("/logout", (req, res) => {
+router.get("/logout", (req, res,next) => {
   if (req.session) {
     req.session.destroy();
     req.clearCookie("session-id");
