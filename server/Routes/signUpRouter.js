@@ -13,13 +13,8 @@ router.post("/signup", (req, res, next) => {
     req.body.admin=false
   }
   Users.register(
-<<<<<<< HEAD
     new Users({ username: req.body.username, email: req.body.email }),
 
-=======
-    new Users({ username: req.body.username, email: req.body.email,admin:req.body.admin }),
-    req.body.password,
->>>>>>> 023e812be1399699f070b1516e4bdc2c6c176e7c
     function(err, account) {
       if (err) {
         res.statusCode = 500;
