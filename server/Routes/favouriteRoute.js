@@ -5,17 +5,16 @@ const mongoose = require("mongoose");
 const Favourites = require("../models/favourite");
 const authenticate = require("../authenticate");
 
-
 const favouriteRouter = express.Router();
 
 favouriteRouter.use(bodyParser.json());
 
 favouriteRouter
   .route("/")
-  .options( (req, res) => {
+  .options((req, res) => {
     res.sendStatus(200);
   })
-  .get( authenticate.verifyUser, (req, res, next) => {
+  .get(authenticate.verifyUser, (req, res, next) => {
     Favourites.findOne({ user: req.user._id })
       .populate("user")
       .populate("library")
@@ -29,17 +28,16 @@ favouriteRouter
       )
       .catch(err => next(err));
   })
-  .post( authenticate.verifyUser, (req, res, next) => {
+  .post(authenticate.verifyUser, (req, res, next) => {
+    console.log(req.query.favId,"in bysysysy")
     Favourites.findOne({ user: req.user._id })
       .then(
         favourites => {
+          console.log("FAV : " + favourites);
           if (favourites == null) {
-            var allbooks = req.body;
             var favObj = {};
-            user = req.user._id;
-            for (var i = 0; i < allbooks.length; i++) {
-              favObj.books[i] = allbooks[i]._id;
-            }
+            favObj.user = req.user._id;
+            favObj.books = req.query.favId;
             Favourites.create(favObj)
               .then(
                 fav => {
@@ -52,34 +50,37 @@ favouriteRouter
               )
               .catch(err => next(err));
           } else {
-            var allbooks = req.body;
-            for (var i = 0; i < allbooks.length; i++) {
-              if (favourites.books.indexOf(allbooks[i]._id) == -1)
-                favourites.books.push(allbooks[i]);
-            }
-            favourites
-              .save()
+            Favourites.findOne({ user: req.user._id,books:req.query.favId })
               .then(
-                fav => {
-                  console.log("Added to favourites ", fav);
-                  res.statusCode = 200;
-                  res.setHeader("Content-Type", "application/json");
-                  res.json(fav);
-                },
-                err => next(err)
-              )
-              .catch(err => next(err));
+                user_result=>{
+                  if (user_result == null) {
+                    favourites.books.push(req.query.favId);
+                    favourites.save().then(
+                      fav => {
+                        res.statusCode = 200;
+                        res.setHeader("Content-Type", "application/json");
+                        res.json(fav);
+                      },
+                      err => next(err)
+                    );
+                  }else{
+                    res.statusCode = 200;
+                    res.setHeader("Content-Type", "application/json");
+                    res.json({"error":"Book is already Favourite"});
+                  }
+                }
+              ).catch(err => next(err));
           }
         },
         err => next(err)
       )
       .catch(err => next(err));
   })
-  .put( authenticate.verifyUser, (req, res, next) => {
+  .put(authenticate.verifyUser, (req, res, next) => {
     res.statusCode = 403;
     res.end("PUT operation not supported on /favourites");
   })
-  .delete( authenticate.verifyUser, (req, res, next) => {
+  .delete(authenticate.verifyUser, (req, res, next) => {
     Favourites.remove()
       .then(
         resp => {
@@ -93,15 +94,28 @@ favouriteRouter
   });
 
 favouriteRouter
-  .route("/:favId")
-  .options( (req, res) => {
+  .route("/?favId")
+  .options((req, res) => {
     res.sendStatus(200);
   })
-  .get( (req, res, next) => {
-    res.statusCode = 403;
-    res.end("get operation not supported on /books/" + req.params.favId);
+  .get((req, res, next) => {
+    // res.statusCode = 403;
+    // res.end("get operation not supported on /books/" + req.params.favId);
+    Favourites.findOne({ user: req.user._id })
+      .populate("user")
+      .populate("library")
+      .then(
+        favourites => {
+          res.statusCode = 200;
+          res.setHeader("Content-Type", "application/json");
+          res.json(favourites);
+        },
+        err => next(err)
+      )
+      .catch(err => next(err));
   })
-  .post( authenticate.verifyUser, (req, res, next) => {
+  .post(authenticate.verifyUser, (req, res, next) => {
+    console.log(req.query.favId,"in node ")
     Favourites.findOne({ user: req.user._id })
       .then(
         favourites => {
@@ -109,7 +123,7 @@ favouriteRouter
           if (favourites == null) {
             var favObj = {};
             favObj.user = req.user._id;
-            favObj.books = req.params.favId;
+            favObj.books = req.query.favId;
             Favourites.create(favObj)
               .then(
                 fav => {
@@ -122,7 +136,7 @@ favouriteRouter
               )
               .catch(err => next(err));
           } else {
-            favourites.books.push(req.params.favId);
+            favourites.books.push(req.query.favId);
             favourites.save().then(
               fav => {
                 res.statusCode = 200;
@@ -137,11 +151,11 @@ favouriteRouter
       )
       .catch(err => next(err));
   })
-  .put( authenticate.verifyUser, (req, res, next) => {
+  .put(authenticate.verifyUser, (req, res, next) => {
     res.statusCode = 403;
     res.end("PUT operation not supported on books: " + req.params.favId);
   })
-  .delete( authenticate.verifyUser, (req, res, next) => {
+  .delete(authenticate.verifyUser, (req, res, next) => {
     Favourites.findOne({ user: req.user._id })
       .then(
         fav => {
