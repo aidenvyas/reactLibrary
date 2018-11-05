@@ -29,7 +29,7 @@ favouriteRouter
       .catch(err => next(err));
   })
   .post(authenticate.verifyUser, (req, res, next) => {
-    console.log(req.query.favId,"in bysysysy")
+    console.log(req.query.favId, "in bysysysy");
     Favourites.findOne({ user: req.user._id })
       .then(
         favourites => {
@@ -50,26 +50,25 @@ favouriteRouter
               )
               .catch(err => next(err));
           } else {
-            Favourites.findOne({ user: req.user._id,books:req.query.favId })
-              .then(
-                user_result=>{
-                  if (user_result == null) {
-                    favourites.books.push(req.query.favId);
-                    favourites.save().then(
-                      fav => {
-                        res.statusCode = 200;
-                        res.setHeader("Content-Type", "application/json");
-                        res.json(fav);
-                      },
-                      err => next(err)
-                    );
-                  }else{
-                    res.statusCode = 200;
-                    res.setHeader("Content-Type", "application/json");
-                    res.json({"error":"Book is already Favourite"});
-                  }
+            Favourites.findOne({ user: req.user._id, books: req.query.favId })
+              .then(user_result => {
+                if (user_result == null) {
+                  favourites.books.push(req.query.favId);
+                  favourites.save().then(
+                    fav => {
+                      res.statusCode = 200;
+                      res.setHeader("Content-Type", "application/json");
+                      res.json(fav);
+                    },
+                    err => next(err)
+                  );
+                } else {
+                  res.statusCode = 200;
+                  res.setHeader("Content-Type", "application/json");
+                  res.json({ error: "Book is already Favourite" });
                 }
-              ).catch(err => next(err));
+              })
+              .catch(err => next(err));
           }
         },
         err => next(err)
@@ -115,7 +114,7 @@ favouriteRouter
       .catch(err => next(err));
   })
   .post(authenticate.verifyUser, (req, res, next) => {
-    console.log(req.query.favId,"in node ")
+    console.log(req.query.favId, "in node ");
     Favourites.findOne({ user: req.user._id })
       .then(
         favourites => {

@@ -8,13 +8,13 @@ var FileStore = require("session-file-store")(session);
 app.use(bodyParser.json());
 const db = require("./db");
 app.use(cors());
-
+const path=require('path')
 const authenticate = require("./authenticate");
 const config = require("./config");
 const userRouter = require("./Routes/usersRouter");
 const bookRouter = require("./Routes/booksRouter");
 const userSign = require("./Routes/signUpRouter");
-const favourite=require('./Routes/favouriteRoute')
+const favourite = require("./Routes/favouriteRoute");
 const passport = require("passport");
 
 app.use(passport.initialize());
@@ -22,5 +22,8 @@ app.use(passport.initialize());
 app.use("/user", userSign);
 app.use("/books", bookRouter);
 app.use("/users", userRouter);
-app.use("/favourite",favourite)
+app.use("/favourite", favourite);
+app.get("/index", (req, res) => {
+  res.sendFile(path.join(__dirname+'/index.html'));
+});
 module.exports = app;

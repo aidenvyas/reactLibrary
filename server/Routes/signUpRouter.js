@@ -4,16 +4,15 @@ const Users = require("../models/users");
 const passport = require("passport");
 const authenticate = require("../authenticate");
 
-
 router.post("/signup", (req, res, next) => {
-
-  if(req.body.admin){
-    req.body.admin=true
-  }else{
-    req.body.admin=false
+  if (req.body.admin) {
+    req.body.admin = true;
+  } else {
+    req.body.admin = false;
   }
   Users.register(
     new Users({ username: req.body.username, email: req.body.email }),
+    req.body.password,
 
     function(err, account) {
       if (err) {
@@ -29,7 +28,6 @@ router.post("/signup", (req, res, next) => {
   );
 });
 
-
 router.post("/login", passport.authenticate("local"), (req, res) => {
   const token = authenticate.getToken({ _id: req.user._id });
   res.statusCode = 200;
@@ -41,7 +39,7 @@ router.post("/login", passport.authenticate("local"), (req, res) => {
   });
 });
 
-router.get("/logout", (req, res,next) => {
+router.get("/logout", (req, res, next) => {
   if (req.session) {
     req.session.destroy();
     req.clearCookie("session-id");
@@ -52,5 +50,23 @@ router.get("/logout", (req, res,next) => {
     next(err);
   }
 });
+
+router.get(
+  "/facebook/token",
+  passport.authenticate("facebook-token"),
+  (req, res) => {
+    console.log("fb user req", req);
+    if (req.user) {
+      var token = authenticate.getToken({ _id: req.user._id });
+      res.statusCode = 200;
+      res.setHeader("Content-Type", "application/json");
+      res.json({
+        success: true,
+        token: token,
+        status: "You are successfully logged in!"
+      });
+    }
+  }
+);
 
 module.exports = router;
